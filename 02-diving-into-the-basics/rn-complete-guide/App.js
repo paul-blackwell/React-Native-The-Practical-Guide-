@@ -17,7 +17,11 @@ export default function App() {
      * Same as the above but this is always guaranteed to give you
      * the latest state snapshot before it then applies your state
      */
-    setCourseGoals(currentGoals => [...currentGoals, { key: Math.random().toString(), value: goalTitle }])
+    setCourseGoals(
+      currentGoals => 
+      [...currentGoals, { key: Math.random().toString(), value: goalTitle }]
+      );
+    setIsAddMode(false);
   };
 
 
@@ -27,10 +31,15 @@ export default function App() {
     });
   }
 
+  const cancelGoalAdditionHandler = () => {
+    setIsAddMode(false);
+  };
+
+
   return (
     <View style={styles.screen}>
       <Button title="Add New Goal" onPress={() => setIsAddMode(true)}/>
-      <GoalInput visible={isAddMode} onAddGoal={addGoalHandler}/>
+      <GoalInput visible={isAddMode} onAddGoal={addGoalHandler} onCancel={cancelGoalAdditionHandler}/>
       <FlatList data={courseGoals} renderItem={itemData =>
         <GoalItem title={itemData.item.value} id={itemData.item.id} onDelete={removeGoalHandler} />
       }
