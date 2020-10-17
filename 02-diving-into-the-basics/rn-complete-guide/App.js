@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+//import { v4 as uuid } from 'uuid';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
@@ -12,7 +13,7 @@ export default function App() {
     setEnteredGoal(enteredText);
   };
 
-  
+
   const addGoalHandler = () => {
 
     //setCourseGoals([...setCourseGoals, enteredGoal]);
@@ -36,7 +37,7 @@ export default function App() {
         <Button title="ADD" onPress={addGoalHandler} />
       </View>
       <View>
-
+        {courseGoals.map((goal) => <Text key={goal}>{goal}</Text>)}
       </View>
     </View>
   );
