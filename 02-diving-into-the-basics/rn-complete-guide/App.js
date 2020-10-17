@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 //import { v4 as uuid } from 'uuid';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 
 export default function App() {
 
@@ -22,7 +22,7 @@ export default function App() {
      * Same as the above but this is always guaranteed to give you
      * the latest state snapshot before it then applies your state
      */
-    setCourseGoals(currentGoals => [...currentGoals, enteredGoal])
+    setCourseGoals(currentGoals => [...currentGoals, {key: Math.random().toString(), value: enteredGoal}])
   };
 
   return (
@@ -36,9 +36,9 @@ export default function App() {
         />
         <Button title="ADD" onPress={addGoalHandler} />
       </View>
-      <ScrollView>
-          {courseGoals.map((goal) =>  <View key={goal} style={styles.listItem}><Text>{goal}</Text></View>)}
-        </ScrollView>
+      <FlatList data={courseGoals} renderItem={itemData =>
+        <View style={styles.listItem}><Text>{itemData.item.value}</Text></View>}
+      />
     </View>
   );
 }
