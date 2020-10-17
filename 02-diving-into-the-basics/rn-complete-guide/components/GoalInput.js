@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput,Button, StyleSheet } from 'react-native';
+import { View, TextInput,Button, StyleSheet} from 'react-native';
 
 
 const GoalInput = props => {
@@ -12,7 +12,7 @@ const GoalInput = props => {
     
 
     return(
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainer} >
         <TextInput
           placeholder="Course goal"
           style={styles.input}
