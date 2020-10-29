@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     StyleSheet,
@@ -27,6 +27,18 @@ const StartGameScreen = props => {
     const [enteredValue, setEnteredValue] = useState('');
     const [confirmed, setConfirmed] = useState(false);
     const [selectedNumber, setSelectedNumber] = useState();
+    const [buttonWidth, setButtonWidth] = useState(Dimensions.get('window').width / 4);
+
+
+    useEffect(() => {
+        const updateLayout = () => {
+            setButtonWidth(Dimensions.get('window').width / 4)
+        };
+        Dimensions.addEventListener('change', updateLayout);
+        return () => {
+            Dimensions.removeEventListener('change', updateLayout);
+        }
+    });
 
     const numberInputHandler = inputText => {
         // Drop any non number value
@@ -92,14 +104,14 @@ const StartGameScreen = props => {
                                 value={enteredValue}
                             />
                             <View style={styles.buttonContainer}>
-                                <View style={styles.button}>
+                                <View style={{ width: buttonWidth }}>
                                     <Button
                                         title="Reset"
                                         onPress={resetInputHandler}
                                         color={Colors.accent}
                                     />
                                 </View>
-                                <View style={styles.button}>
+                                <View style={{ width: buttonWidth }}>
                                     <Button
                                         title="Confirm"
                                         onPress={confirmInputHandler}
@@ -140,10 +152,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 15
     },
-    button: {
-        //width: 100
-        width: Dimensions.get('window').width / 4  //  Dimensions.get('window').width is similar to using "vw" in css
-    },
+    // button: {
+    //     //width: 100
+    //     width: Dimensions.get('window').width / 4  // Note: only calculated when app starts, Dimensions.get('window').width is similar to using "vw" in css
+    // },
     input: {
         width: 50,
         textAlign: "center",
