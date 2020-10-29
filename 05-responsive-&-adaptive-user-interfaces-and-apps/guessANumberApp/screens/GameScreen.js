@@ -38,7 +38,7 @@ const generateRandomBetween = (min, max, exclude) => {
 // );
 
 // For FlatList
-const renderListItem = (listLength,itemData) => (
+const renderListItem = (listLength, itemData) => (
     <View style={styles.listItem}>
         <BodyText>#{listLength - itemData.index}</BodyText>
         <Text>{itemData.item}</Text>
@@ -53,9 +53,10 @@ const GameScreen = props => {
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
 
     const [pastGuesses, setPastGuesses] = useState([initialGuess.toString()]);
+    const [availableDeviceWidth, setAvailableDeviceWidth] = useState(Dimensions.get('window').width);
+    const [availableDeviceHeight, setAvailableDeviceHeight] = useState(Dimensions.get('window').height);
     const currentLow = useRef(1);
     const currentHigh = useRef(100);
-
     const { userChoice, onGameOver } = props;
 
     /**
@@ -68,6 +69,23 @@ const GameScreen = props => {
             onGameOver(pastGuesses.length);
         }
     }, [currentGuess, userChoice, onGameOver]);
+
+
+    useEffect(() => {
+
+        const updateLayout = () => {
+            setAvailableDeviceWidth(Dimensions.get('window').width);
+            setAvailableDeviceHeight(Dimensions.get('window').height);
+        };
+
+        Dimensions.addEventListener('change', updateLayout);
+
+        // cleanup function to avoid unnecessary re-renders
+        return () => {
+            Dimensions.removeEventListener('change', updateLayout);
+        }
+    });
+
 
     const nextGuessHandle = direction => {
 
@@ -90,6 +108,37 @@ const GameScreen = props => {
         setPastGuesses(curPastGuesses => [nextNumber.toString(), ...curPastGuesses]);
     };
 
+    let listContainerStyle = styles.listContainer;
+
+    if(availableDeviceWidth < 350) {
+        listContainerStyle = styles.listContainerBig;
+    }
+
+    if (availableDeviceHeight < 500) {
+        return (
+            <View style={styles.screen}>
+                <Text style={DefaultStyles.title}>Opponent's Guess</Text>
+                <View style={styles.controls}>
+                    <MainButton onPress={nextGuessHandle.bind(this, 'lower')} >
+                        <Ionicons name="md-remove" size={24} color="white" />
+                    </MainButton>
+                    <NumberContainer>{currentGuess}</NumberContainer>
+                    <MainButton onPress={nextGuessHandle.bind(this, 'greater')} >
+                        <Ionicons name="md-add" size={24} color="white" />
+                    </MainButton>
+                </View>
+                <View style={listContainerStyle}>
+                    <FlatList
+                        keyExtractor={(item) => item}
+                        data={pastGuesses}
+                        renderItem={renderListItem.bind(this, pastGuesses.length)}
+                        contentContainerStyle={styles.list}
+                    />
+                </View>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.screen}>
             <Text style={DefaultStyles.title}>Opponent's Guess</Text>
@@ -106,11 +155,11 @@ const GameScreen = props => {
                 {/* <ScrollView contentContainerStyle={styles.list}>
                     {pastGuesses.map((guess, index) => renderListItem(guess, pastGuesses.length - index))}
                 </ScrollView> */}
-                <FlatList 
-                keyExtractor={(item) => item} 
-                data={pastGuesses} 
-                renderItem={renderListItem.bind(this, pastGuesses.length)}
-                contentContainerStyle={styles.list}
+                <FlatList
+                    keyExtractor={(item) => item}
+                    data={pastGuesses}
+                    renderItem={renderListItem.bind(this, pastGuesses.length)}
+                    contentContainerStyle={styles.list}
                 />
             </View>
         </View>
@@ -130,11 +179,21 @@ const styles = StyleSheet.create({
         width: 400,
         maxWidth: '90%',
     },
+    controls: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '80%'
+    },
     listContainer: {
         flex: 1, // if ScrollView is a child of a view you need this to make it scroll on android
         // width: '80%',
-        width: Dimensions.get('window').width > 350 ? '60%' : '80%',
+        width: '60%',
 
+    },
+    listContainerBig: {
+        flex: 1,
+        width: '80%'
     },
     list: {
         flexGrow: 1,
