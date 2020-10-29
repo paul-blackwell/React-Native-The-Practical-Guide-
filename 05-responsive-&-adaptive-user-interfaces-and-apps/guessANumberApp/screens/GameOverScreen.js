@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Dimensions, ScrollView } from 'react-nat
 
 import BodyText from '../components/BodyText';
 import TitleText from '../components/TitleText';
-import MainButton from '../components/MainButton';
+import MainButton from '../components/MainButton.android';
 import Colors from '../constants/colors';
 
 

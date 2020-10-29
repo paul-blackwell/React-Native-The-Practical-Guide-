@@ -6,7 +6,7 @@ import { ScreenOrientation } from 'expo';
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
 import BodyText from '../components/BodyText';
-import MainButton from '../components/MainButton';
+import MainButton from '../components/MainButton.android';
 import DefaultStyles from '../constants/default-styles';
 
 
