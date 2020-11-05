@@ -7,7 +7,7 @@ import { enableScreens } from 'react-native-screens';
 
 import MealsNavigator from './navigation/MealsNavigator';
 
-// This is just for optimizing screen transitions
+// This is just for optimizing/performance screen transitions
 enableScreens();
 
 const fetchFonts = () => {
