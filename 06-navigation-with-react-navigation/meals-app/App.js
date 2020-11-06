@@ -22,6 +22,8 @@ export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   if(!fontLoaded) {
+
+    console.log('Font was loaded')
     return(
       <AppLoading 
       startAsync={fetchFonts}
