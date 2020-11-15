@@ -1,17 +1,27 @@
 import React from 'react';
-import MealItem from '../components/MealItem';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
+import HeaderButton from '../components/HeaderButton';
 import MealList from '../components/MealsList';
-import {MEALS} from '../data/dummy-data';
+import { MEALS } from '../data/dummy-data';
 
 
 const FavoritesScreen = props => {
     const favMeals = MEALS.filter(meal => meal.id === 'm1' || meal.id === 'm2'); // Dummy logic
-    return <MealList listData={favMeals} navigation={props.navigation}/>;
+    return <MealList listData={favMeals} navigation={props.navigation} />;
 };
 
-FavoritesScreen.navigationOptions = {
-    headerTitle: 'Your Favorites'
+FavoritesScreen.navigationOptions = (navData) => {
+    return {
+        headerTitle: 'Your Favorites',
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item title="Menu" iconName="ios-menu" onPress={() => {
+                    navData.navigation.toggleDrawer();
+                }} />
+            </HeaderButtons>
+        )
+    }
 };
 
 
