@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, Switch, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -22,10 +22,32 @@ const FilterSwitch = props => {
 
 
 const FiltersScreen = props => {
+    const { navigation } = props;
+
     const [isGlutenFree, setIsGlutenFree] = useState(false);
     const [isLactoseFree, setIsLactoseFree] = useState(false);
     const [isVegan, setIsVegan] = useState(false);
     const [isVegetarian, setIsVegetarian] = useState(false);
+
+    const saveFilters = useCallback(() => {
+        const appliedFilters = {
+            glutenFree: isGlutenFree,
+            isLactoseFree: isLactoseFree,
+            vegan: isVegan,
+            isVegetarian: isVegetarian
+        };
+        console.log(appliedFilters);
+    }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+
+    /**
+     * This will allow the appliedFilters to be
+     * accessed in the navigation we do this by
+     * updating the params values for the currently 
+     * loaded screen (will be empty to start with)
+     */
+    useEffect(() => {
+        navigation.setParams({ save: saveFilters });
+    }, [saveFilters]);
 
     return (
         <View style={styles.screen}>
@@ -48,6 +70,11 @@ FiltersScreen.navigationOptions = (navData) => {
                 <Item title="Menu" iconName="ios-menu" onPress={() => {
                     navData.navigation.toggleDrawer();
                 }} />
+            </HeaderButtons>
+        ),
+        headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item title="Save" iconName="ios-save" onPress={navData.navigation.getParam('save')} />
             </HeaderButtons>
         )
     }
