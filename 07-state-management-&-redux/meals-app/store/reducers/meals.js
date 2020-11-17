@@ -1,5 +1,5 @@
 import { MEALS } from '../../data/dummy-data';
-import { TOGGLE_FAVORITE } from '../actions/meals';
+import { TOGGLE_FAVORITE, SET_FILTERS } from '../actions/meals';
 
 
 
@@ -18,11 +18,29 @@ const mealsReducer = (state = initialState, action) => {
                 const updatedFavMeals = [...state.favoriteMeals];
                 updatedFavMeals.splice(existingIndex, 1); // take updatedFavMeals index, edit it and remove the item at this index
                 return { ...state, favoriteMeals: updatedFavMeals }
-            } else { 
+            } else {
                 // if we are not finding a product so we want to add it
                 const meal = state.meals.find(meal => meal.id === action.mealId);
                 return { ...state, favoriteMeals: state.favoriteMeals.concat(meal) }
             }
+        case SET_FILTERS:
+            const appliedFilters = action.filters;
+            const updatedFilteredMeals = state.meals.filter(meal => {
+                if (appliedFilters.glutenFree && !meal.isGlutenFree) {
+                    return false;
+                }
+                if (appliedFilters.lactoseFree && !meal.isLactoseFree) {
+                    return false;
+                }
+                if (appliedFilters.vegetarian && !meal.isVegetarian) {
+                    return false;
+                }
+                if(appliedFilters.vegan && !meal.isVegan) {
+                    return false;
+                }
+                return true;
+            });
+            return {... state, filteredMeals: updatedFilteredMeals}
         default:
             return state;
     }
