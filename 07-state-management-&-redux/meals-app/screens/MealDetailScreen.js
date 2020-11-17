@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useCallback} from 'react';
 import { ScrollView, View, Image, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 import HeaderButton from '../components/HeaderButton';
 import DefaultText from '../components/DefaultText';
+import { toggleFavorite } from '../store/actions/meals';
 
 const ListItem = props => {
     return (
@@ -21,15 +22,20 @@ const MealDetailScreen = props => {
 
     const selectedMeal = availableMeals.find(meal => meal.id === mealId);
 
+    const dispatch = useDispatch();
+
+    const toggleFavoriteHandler = useCallback(() => {
+        dispatch(toggleFavorite(mealId));
+    }, [dispatch, mealId]);
+
 
     /**
-     * We don't use useEffect because it will run after the first render 
-     * render cycle so their will be a delay when the tile is show on 
-     * the navigation and we do not want that 
+     * Note: useEffect will run after the first render 
      */
-    // useEffect(() => {
-    //     props.navigation.setParams({ mealTitle: selectedMeal.title });
-    // }, [selectedMeal]);
+    useEffect(() => {
+        // props.navigation.setParams({ mealTitle: selectedMeal.title });
+        props.navigation.setParams({toggleFav: toggleFavoriteHandler})
+    }, [toggleFavoriteHandler]);
 
     return (
         <ScrollView>
@@ -49,8 +55,9 @@ const MealDetailScreen = props => {
 
 // Navigation Options
 MealDetailScreen.navigationOptions = (navigationData) => {
-    const mealId = navigationData.navigation.getParam('mealId');
+    // const mealId = navigationData.navigation.getParam('mealId');
     const mealTitle = navigationData.navigation.getParam('mealTitle');
+    const toggleFavorite = navigationData.navigation.getParam('toggleFav')
     // const selectedMeal = MEALS.find(meal => meal.id === mealId);
 
     return {
@@ -60,9 +67,7 @@ MealDetailScreen.navigationOptions = (navigationData) => {
                 <Item
                     title='Favorite'
                     iconName='ios-star'
-                    onPress={() => {
-                        console.log('Mark as favorite')
-                    }} />
+                    onPress={toggleFavorite} />
             </HeaderButtons>
         )
     };
