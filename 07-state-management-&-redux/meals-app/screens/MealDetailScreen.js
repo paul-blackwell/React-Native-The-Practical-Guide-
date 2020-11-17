@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, View, Image, Text, StyleSheet} from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView, View, Image, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -7,11 +7,11 @@ import HeaderButton from '../components/HeaderButton';
 import DefaultText from '../components/DefaultText';
 
 const ListItem = props => {
-   return (
-       <View style={styles.listItem}>
-           <DefaultText>{props.children}</DefaultText>
-       </View>
-   )
+    return (
+        <View style={styles.listItem}>
+            <DefaultText>{props.children}</DefaultText>
+        </View>
+    )
 }
 
 const MealDetailScreen = props => {
@@ -20,6 +20,16 @@ const MealDetailScreen = props => {
     const mealId = props.navigation.getParam('mealId');
 
     const selectedMeal = availableMeals.find(meal => meal.id === mealId);
+
+
+    /**
+     * We don't use useEffect because it will run after the first render 
+     * render cycle so their will be a delay when the tile is show on 
+     * the navigation and we do not want that 
+     */
+    // useEffect(() => {
+    //     props.navigation.setParams({ mealTitle: selectedMeal.title });
+    // }, [selectedMeal]);
 
     return (
         <ScrollView>
@@ -40,10 +50,11 @@ const MealDetailScreen = props => {
 // Navigation Options
 MealDetailScreen.navigationOptions = (navigationData) => {
     const mealId = navigationData.navigation.getParam('mealId');
-    const selectedMeal = MEALS.find(meal => meal.id === mealId);
+    const mealTitle = navigationData.navigation.getParam('mealTitle');
+    // const selectedMeal = MEALS.find(meal => meal.id === mealId);
 
     return {
-        headerTitle: selectedMeal.title,
+        headerTitle: mealTitle,
         headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
@@ -74,11 +85,11 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     listItem: {
-       marginVertical: 10,
-       marginHorizontal: 20,
-       borderColor: '#ccc',
-       borderWidth: 1,
-       padding: 10
+        marginVertical: 10,
+        marginHorizontal: 20,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        padding: 10
     }
 });
 
