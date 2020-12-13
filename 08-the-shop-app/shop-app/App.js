@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
-
+import { AppLoading } from 'expo';
+//import AppLoading from 'expo-app-loading';
 
 
 import productsReducer from './store/reducers/products';
@@ -30,10 +30,11 @@ export default function App() {
       <AppLoading
         startAsync={fetchFonts}
         onFinish={() => setFontLoaded(true)}
-        onError={console.log('Error loading assets')}
+        onError={console.error();)}
       />
     )
   }
+
 
   return (
     <Provider store={store}>
