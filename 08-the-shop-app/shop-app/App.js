@@ -1,10 +1,8 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-//import AppLoading from 'expo-app-loading';
-
+import * as Font from 'expo-font';
 
 import productsReducer from './store/reducers/products';
 import ShopNavigator from './navigation/ShopNavigator';
@@ -19,7 +17,7 @@ const fetchFonts = () => {
   return Font.loadAsync({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf')
-  })
+  });
 };
 
 export default function App() {
@@ -29,13 +27,12 @@ export default function App() {
     return (
       <AppLoading
         startAsync={fetchFonts}
-        onFinish={() => setFontLoaded(true)}
-        onError={console.error();)}
+        onFinish={() => {
+          setFontLoaded(true);
+        }}
       />
-    )
+    );
   }
-
-
   return (
     <Provider store={store}>
       <ShopNavigator />
