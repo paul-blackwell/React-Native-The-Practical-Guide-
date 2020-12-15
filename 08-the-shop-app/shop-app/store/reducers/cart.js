@@ -18,43 +18,34 @@ export default (state = initialState, action) => {
             const prodPrice = addedProduct.price;
             const prodTitle = addedProduct.title;
 
+            let updatedOrNewCartItem;
+
             if (state.items[addedProduct.id]) {
                 // already have the item in the cart
-                const updatedCartItem = newCartItem(
+                const updatedOrNewCartItem = newCartItem(
                     state.items[addedProduct.id].quantity + 1,
                     prodPrice,
                     prodTitle,
                     state.items[addedProduct.id].sum + prodPrice
                 );
 
-                /**
-               * Return a copy of our state,
-               * set items equal to a new object, where we copy all of the existing state items,
-               * then we add a new key, where the key name is addedProduct.id and the value being our
-               * updatedCartItem
-               */
-                return {
-                    ...state,
-                    items: { ...state.items, [addedProduct.id]: updatedCartItem },
-                    totalAmount: state.totalAmount + prodPrice
-                }
 
             } else {
                 // add a new item 
-                const newCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
+                const updatedOrNewCartItem = new CartItem(1, prodPrice, prodTitle, prodPrice);
+            }
 
-                /**
+             /**
                  * Return a copy of our state,
                  * set items equal to a new object, where we copy all of the existing state items,
                  * then we add a new key, where the key name is addedProduct.id and the value being our
-                 * newCartItem
+                 * updatedOrNewCartIte
                  */
                 return {
                     ...state,
-                    items: { ...state.items, [addedProduct.id]: newCartItem },
+                    items: { ...state.items, [addedProduct.id]: updatedOrNewCartItem},
                     totalAmount: state.totalAmount + prodPrice
                 }
-            }
     }
     return state;
 };
