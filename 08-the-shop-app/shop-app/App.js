@@ -3,7 +3,12 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import { composeWithDevTools } from 'redux-devtools-extension'; // so we can use redux in the dev tools, remove before deploy!!
+
+/**
+ * so we can use redux in the dev tools, remove before deploy!!
+ * Check ""Adding Items to the Cart" tutorial from more info
+ */
+import { composeWithDevTools } from 'redux-devtools-extension'; 
 
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
