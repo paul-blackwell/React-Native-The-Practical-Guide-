@@ -8,7 +8,7 @@ import * as Font from 'expo-font';
  * so we can use redux in the dev tools, remove before deploy!!
  * Check ""Adding Items to the Cart" tutorial from more info
  */
-import { composeWithDevTools } from 'redux-devtools-extension'; 
+//import { composeWithDevTools } from 'redux-devtools-extension'; 
 
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
@@ -19,7 +19,10 @@ const rootReducer = combineReducers({
   cart: cartReducer
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+// So we can use redux in the dev tools, remove before deploy
+//const store = createStore(rootReducer, composeWithDevTools());
+
+const store = createStore(rootReducer);
 
 const fetchFonts = () => {
   return Font.loadAsync({
