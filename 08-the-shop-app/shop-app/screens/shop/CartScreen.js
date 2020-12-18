@@ -12,10 +12,12 @@ const CartScreen = props => {
             transformedCartItems.push({
                 productId:key,
                 productTitle: state.cart.items[key].productTitle,
-                productPrice: state.cart.items[key].productPrice
+                productPrice: state.cart.items[key].productPrice,
+                quantity: state.cart.items[key].quantity,
+                sum: state.cart.items[key].sum
             });
         }
-        return
+        return transformedCartItems;
     });
 
     return (
@@ -24,7 +26,11 @@ const CartScreen = props => {
                 <Text style={styles.summaryText}>
                     Total: <Text style={styles.amount}>${cartTotalAmount.toFixed(2)}</Text>
                 </Text>
-                <Button color={Colors.accent} title="Order now" />
+                <Button 
+                color={Colors.accent} 
+                title="Order now" 
+                disabled={cartItems.length === 0} // disable button if not items in cart
+                />
             </View>
             <View>
                 <Text>CART ITEMS</Text>
