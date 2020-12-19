@@ -12,11 +12,13 @@ import * as Font from 'expo-font';
 
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
+import ordersReducer from './store/reducers/orders';
 import ShopNavigator from './navigation/ShopNavigator';
 
 const rootReducer = combineReducers({
   products: productsReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  orders: ordersReducer
 });
 
 // So we can use redux in the dev tools, remove before deploy
