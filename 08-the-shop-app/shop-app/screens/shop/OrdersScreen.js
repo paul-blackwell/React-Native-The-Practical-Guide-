@@ -13,4 +13,11 @@ const OrdersScreen = props => {
     );
 };
 
+
+OrdersScreen.navigationOptions = {
+    headerTitle: 'Your Orders'
+}
+
+
+
 export default OrdersScreen;
